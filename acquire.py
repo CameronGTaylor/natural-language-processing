@@ -4,17 +4,27 @@ from bs4 import BeautifulSoup
 import os
 import re
 
+def get_codeup_url_list():
+    urls = [
+        'https://codeup.com/codeups-data-science-career-accelerator-is-here/',
+        'https://codeup.com/data-science-myths/',
+        'https://codeup.com/data-science-vs-data-analytics-whats-the-difference/',
+        'https://codeup.com/10-tips-to-crush-it-at-the-sa-tech-job-fair/',
+        'https://codeup.com/competitor-bootcamps-are-closing-is-the-model-in-danger/'
+    ]
+    return urls
+
 def get_blog_articles(urls):
     def get_blog_article(url):
         headers = {'User-Agent': 'manual search'} 
         response = get(url, headers=headers)
-        soup = BeautifulSoup(response.content)
+        soup = BeautifulSoup(response.content, 'html.parser')
         title = soup.select('title')[0].text
         selection = 'div > div.jupiterx-post-content.clearfix'
         article = soup.select(selection)
         article = article[0].text.replace('\xa0', ' ')
         return dict({'title': title, 'content': article})
-    return [get_blog_article(url) for url in urls]
+    return pd.DataFrame([get_blog_article(url) for url in urls])
 
 def get_inshorts_category_articles(url):
     lm = pd.DataFrame()
