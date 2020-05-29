@@ -11,7 +11,7 @@ def basic_clean(string):
     normal = unicodedata.normalize('NFKD', lower)\
         .encode('ascii', 'ignore')\
         .decode('utf-8', 'ignore')
-    clean = re.sub(r"[^a-z0-9'\s]", '', normal)
+    clean = re.sub(r"[^a-z0-9\s]", '', normal)
     return clean
 
 def tokenize(string):
